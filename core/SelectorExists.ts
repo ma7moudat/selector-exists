@@ -1,52 +1,69 @@
 import chalk from 'chalk';
-import {parse as parseHtml} from 'node-html-parser';
-import {AtRule, Comment, parse as parseCss, Rule} from 'css';
-
-interface ISelectorExistsRule {
-  selectors?: string[];
-  rules?: Array<Rule | Comment | AtRule>;
-}
-
-interface ISelectorExistsOptions {
-  html: any,
-  css: any,
-}
+import {ICssRule, IParsedHtmlChunk, ISelectorGroup} from '../model';
+import {SourceCss} from './Source/Css';
+import {SourceHtml} from './Source/Html';
 
 const extractSelectors = (
   allSelectors: string[],
-  {selectors = [], rules = []}: ISelectorExistsRule
+  {selectors = [], rules = []}: ICssRule
 ): string[] => [
   ...allSelectors,
   ...selectors,
-  ...(rules.length ? (<ISelectorExistsRule[]>rules).reduce(extractSelectors, []) : []),
+  ...(rules.length ? (<ICssRule[]>rules).reduce(extractSelectors, []) : []),
 ];
 
 export class SelectorExists {
-  private options: ISelectorExistsOptions;
+  protected cssSources: SourceCss[] = [];
 
-  constructor(options: ISelectorExistsOptions) {
-    this.options = options;
+  protected htmlSources: SourceHtml[] = [];
+
+  protected groupedSelectors: ISelectorGroup[] = [];
+
+  protected parsedHtml: IParsedHtmlChunk[] = [];
+
+  addCssSource(source: SourceCss) {
+    this.cssSources.push(source);
   }
 
-  report() {
-    const parsedHtml = parseHtml(this.options.html);
-    const {stylesheet} = parseCss(this.options.css);
-    if (!stylesheet) {
-      console.log(chalk.yellowBright('Parsing CSS returned no selectors!'));
-      return;
-    }
-    const {rules = []} = stylesheet;
+  addHtmlSource(source: SourceHtml) {
+    this.htmlSources.push(source);
+  }
+
+  async report() {
+    await Promise.all(this
+      .cssSources
+      .map(async src => this.groupedSelectors = [
+        ...this.groupedSelectors,
+        ...await src.getGroupedSelectors()
+      ]));
+
+    await Promise.all(this
+      .htmlSources
+      .map(async src => this.parsedHtml = [
+        ...this.parsedHtml,
+        ...await src.getParsedHtml()
+      ]));
 
     console.group(chalk.magenta('Selector Exists'));
 
-    const selectors = (<ISelectorExistsRule[]>rules).reduce(extractSelectors, []);
-    selectors.map(selector => {
-      if (parsedHtml.querySelector(selector)) {
-        console.log(chalk.green(`${selector} is used`));
-      } else {
-        console.log(chalk.red(`${selector} is not used`));
-      }
-    });
+    this
+      .parsedHtml
+      .map(({identifier: htmlIdent, parsed}) => {
+        console.log(chalk.yellow(`HTML: ${htmlIdent}`));
+        this
+          .groupedSelectors
+          .map(({identifier: cssIdent, selectors}) => {
+            console.log(chalk.magenta(`CSS: ${cssIdent}`));
+            selectors
+              .map(selector => {
+                if (parsed.querySelector(selector)) {
+                  console.log(chalk.green(`${selector} is used`));
+                } else {
+                  console.log(chalk.red(`${selector} is not used`));
+                }
+              });
+          });
+      });
 
     console.groupEnd();
   }
