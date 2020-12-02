@@ -1,5 +1,4 @@
-import chalk from 'chalk';
-import {ICssRule, IParsedHtmlChunk, ISelectorGroup} from '../model';
+import {ICssRule, IChunkHtml, IChunkCss, IUsage} from '../model';
 import {SourceCss} from './Source/Css';
 import {SourceHtml} from './Source/Html';
 
@@ -17,9 +16,11 @@ export class SelectorExists {
 
   protected htmlSources: SourceHtml[] = [];
 
-  protected groupedSelectors: ISelectorGroup[] = [];
+  protected cssChunks: IChunkCss[] = [];
 
-  protected parsedHtml: IParsedHtmlChunk[] = [];
+  protected htmlChunks: IChunkHtml[] = [];
+
+  protected usages: IUsage[] = [];
 
   addCssSource(source: SourceCss) {
     this.cssSources.push(source);
@@ -29,42 +30,43 @@ export class SelectorExists {
     this.htmlSources.push(source);
   }
 
-  async report() {
+  async processUsages() {
     await Promise.all(this
       .cssSources
-      .map(async src => this.groupedSelectors = [
-        ...this.groupedSelectors,
+      .map(async src => this.cssChunks = [
+        ...this.cssChunks,
         ...await src.getGroupedSelectors()
       ]));
 
     await Promise.all(this
       .htmlSources
-      .map(async src => this.parsedHtml = [
-        ...this.parsedHtml,
+      .map(async src => this.htmlChunks = [
+        ...this.htmlChunks,
         ...await src.getParsedHtml()
       ]));
 
-    console.group(chalk.magenta('Selector Exists'));
-
-    this
-      .parsedHtml
-      .map(({identifier: htmlIdent, parsed}) => {
-        console.log(chalk.yellow(`HTML: ${htmlIdent}`));
-        this
-          .groupedSelectors
-          .map(({identifier: cssIdent, selectors}) => {
-            console.log(chalk.magenta(`CSS: ${cssIdent}`));
-            selectors
-              .map(selector => {
-                if (parsed.querySelector(selector)) {
-                  console.log(chalk.green(`${selector} is used`));
-                } else {
-                  console.log(chalk.red(`${selector} is not used`));
-                }
-              });
-          });
-      });
+    this.usages = this
+      .htmlChunks
+      .reduce<IUsage[]>((allUsages, {identifier: identifierHtml, parsed}) => [
+        ...allUsages,
+        ...this
+          .cssChunks
+          .reduce<IUsage[]>((subUsages, {identifier: identifierCss, selectors}) => [
+            ...subUsages,
+            ...selectors
+              .map(selector => ({
+                identifierCss,
+                identifierHtml,
+                selector,
+                used: !!parsed.querySelector(selector),
+              })),
+          ], []),
+      ], []);
 
     console.groupEnd();
+  }
+
+  showReport() {
+    console.table(this.usages);
   }
 }

@@ -1,4 +1,4 @@
-import {IReaderChunk} from '../../model';
+import {IChunk} from '../../model';
 
 export abstract class ReaderAbstract {
   protected input: string;
@@ -7,5 +7,5 @@ export abstract class ReaderAbstract {
     this.input = input;
   }
 
-  abstract async getChuncks(): Promise<IReaderChunk[]>;
+  abstract async getChuncks(): Promise<IChunk[]>;
 }

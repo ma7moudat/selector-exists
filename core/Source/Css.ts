@@ -1,4 +1,4 @@
-import {ICssRule, ISelectorGroup} from '../../model';
+import {ICssRule, IChunkCss} from '../../model';
 import {parse as parseCss} from 'css';
 import {SourceAbstract} from './Abstract';
 
@@ -12,13 +12,17 @@ const extractSelectors = (
 ];
 
 export class SourceCss extends SourceAbstract {
-  protected groupedSelectors!: ISelectorGroup[];
+  protected groupedSelectors!: IChunkCss[];
 
-  async getGroupedSelectors(): Promise<ISelectorGroup[]> {
+  async getGroupedSelectors(): Promise<IChunkCss[]> {
     if (!this.groupedSelectors) {
       const chunks = await this.reader.getChuncks();
       this.groupedSelectors = chunks
-        .map(({identifier, content}) => ({identifier, selectors: SourceCss.getSelectors(content)}));
+        .map(({identifier, content}) => ({
+          identifier,
+          content,
+          selectors: SourceCss.getSelectors(content),
+        }));
     }
     return this.groupedSelectors;
   }

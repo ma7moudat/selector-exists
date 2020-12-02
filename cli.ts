@@ -64,4 +64,7 @@ if (argv.css) {
 if (argv.html) {
   instance.addHtmlSource(new SourceHtml(new ReaderStdin(argv.html)));
 }
-instance.report();
+
+instance
+  .processUsages()
+  .then(() => instance.showReport());

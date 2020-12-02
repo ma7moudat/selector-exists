@@ -1,18 +1,16 @@
 import {AtRule, Comment, Rule} from 'css';
 import HTMLElement from 'node-html-parser/dist/nodes/html';
 
-export interface IReaderChunk {
+export interface IChunk {
   identifier: string;
   content: string;
 }
 
-export interface ISelectorGroup {
-  identifier: string;
+export interface IChunkCss extends IChunk {
   selectors: string[];
 }
 
-export interface IParsedHtmlChunk {
-  identifier: string;
+export interface IChunkHtml extends IChunk {
   parsed: HTMLElement;
 }
 
@@ -21,7 +19,9 @@ export interface ICssRule {
   rules?: Array<Rule | Comment | AtRule>;
 }
 
-export interface ISelectorExistsOptions {
-  html: any,
-  css: any,
+export interface IUsage {
+  identifierCss: string;
+  identifierHtml: string;
+  selector: string;
+  used: boolean;
 }

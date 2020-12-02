@@ -1,12 +1,12 @@
 import {ReaderAbstract} from './Abstract';
-import {IReaderChunk} from '../../model';
+import {IChunk} from '../../model';
 
 export class ReaderStdin extends ReaderAbstract {
   constructor(input: string) {
     super(input);
   }
 
-  async getChuncks(): Promise<IReaderChunk[]> {
+  async getChuncks(): Promise<IChunk[]> {
     return [
       {
         identifier: 'STDIN',
