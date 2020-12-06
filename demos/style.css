@@ -1,0 +1,22 @@
+body {
+    background-color: antiquewhite;
+}
+
+.page-header {
+    font-size: 2rem;
+}
+
+.page-footer {
+    font-style: italic;
+}
+
+.main-navigation a {
+    text-decoration: underline;
+}
+.main-navigation a:hover {
+    text-decoration: none;
+}
+
+.missing {
+    background-color: red;
+}

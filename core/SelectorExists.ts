@@ -1,6 +1,7 @@
 import {ICssRule, IChunkHtml, IChunkCss, IUsage} from '../model';
 import {SourceCss} from './Source/Css';
 import {SourceHtml} from './Source/Html';
+import {ReaderAbstract} from './Reader/Abstract';
 
 const extractSelectors = (
   allSelectors: string[],
@@ -22,12 +23,12 @@ export class SelectorExists {
 
   protected usages: IUsage[] = [];
 
-  addCssSource(source: SourceCss) {
-    this.cssSources.push(source);
+  addCssSource(reader: ReaderAbstract) {
+    this.cssSources.push(new SourceCss(reader));
   }
 
-  addHtmlSource(source: SourceHtml) {
-    this.htmlSources.push(source);
+  addHtmlSource(reader: ReaderAbstract) {
+    this.htmlSources.push(new SourceHtml(reader));
   }
 
   async processUsages() {
@@ -62,8 +63,6 @@ export class SelectorExists {
               })),
           ], []),
       ], []);
-
-    console.groupEnd();
   }
 
   showReport() {

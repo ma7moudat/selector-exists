@@ -2,11 +2,9 @@
 
 // Dependencies
 import yargs from 'yargs';
-import chalk from 'chalk';
 import {SelectorExists} from './core/SelectorExists';
 import {ReaderStdin} from './core/Reader/Stdin';
-import {SourceHtml} from './core/Source/Html';
-import {SourceCss} from './core/Source/Css';
+import {ReaderFilesystem} from './core/Reader/Filesystem';
 
 // Grab provided args
 const argv = yargs(process.argv)
@@ -53,16 +51,22 @@ const argv = yargs(process.argv)
   .argv;
 
 // Run script
-if (!argv.html || !argv.css) {
-  console.log(chalk.red('HTML and CSS are required'));
-}
+// if (!argv.html || !argv.css) {
+//   console.log(chalk.red('HTML and CSS are required'));
+// }
 
 const instance = new SelectorExists();
 if (argv.css) {
-  instance.addCssSource(new SourceCss(new ReaderStdin(argv.css)));
+  instance.addCssSource(new ReaderStdin(argv.css));
+}
+if (argv['css-files']) {
+  instance.addCssSource(new ReaderFilesystem(argv['css-files']));
 }
 if (argv.html) {
-  instance.addHtmlSource(new SourceHtml(new ReaderStdin(argv.html)));
+  instance.addHtmlSource(new ReaderStdin(argv.html));
+}
+if (argv['html-paths']) {
+  instance.addHtmlSource(new ReaderFilesystem(argv['html-paths']));
 }
 
 instance
