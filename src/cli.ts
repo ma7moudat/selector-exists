@@ -1,10 +1,8 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
 // Dependencies
 import yargs from 'yargs';
-import {SelectorExists} from './core/SelectorExists';
-import {ReaderStdin} from './core/Reader/Stdin';
-import {ReaderFilesystem} from './core/Reader/Filesystem';
+import {SelectorExists, ReaderStdin, ReaderFilesystem} from './index';
 
 // Grab provided args
 const argv = yargs(process.argv)
@@ -49,11 +47,6 @@ const argv = yargs(process.argv)
     description: 'Run with verbose logging'
   })
   .argv;
-
-// Run script
-// if (!argv.html || !argv.css) {
-//   console.log(chalk.red('HTML and CSS are required'));
-// }
 
 const instance = new SelectorExists();
 if (argv.css) {

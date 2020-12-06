@@ -1,7 +1,6 @@
-import {ICssRule, IChunkHtml, IChunkCss, IUsage} from '../model';
-import {SourceCss} from './Source/Css';
-import {SourceHtml} from './Source/Html';
-import {ReaderAbstract} from './Reader/Abstract';
+import {ICssRule, IChunkHtml, IChunkCss, IUsage} from './Model';
+import {ReaderAbstract} from './Reader';
+import {SourceCss, SourceHtml} from './Source';
 
 const extractSelectors = (
   allSelectors: string[],

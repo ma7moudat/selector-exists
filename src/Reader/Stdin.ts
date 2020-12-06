@@ -1,5 +1,5 @@
 import {ReaderAbstract} from './Abstract';
-import {IChunk} from '../../model';
+import {IChunk} from '../Model';
 
 export class ReaderStdin extends ReaderAbstract {
   constructor(input: string) {

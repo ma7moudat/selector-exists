@@ -1,4 +1,4 @@
-import {ReaderAbstract} from '../Reader/Abstract';
+import {ReaderAbstract} from '../Reader';
 
 export abstract class SourceAbstract {
   protected reader: ReaderAbstract;

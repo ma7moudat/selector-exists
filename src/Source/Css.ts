@@ -1,4 +1,4 @@
-import {ICssRule, IChunkCss} from '../../model';
+import {ICssRule, IChunkCss} from '../Model';
 import {parse as parseCss} from 'css';
 import {SourceAbstract} from './Abstract';
 

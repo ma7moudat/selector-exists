@@ -1,7 +1,7 @@
 import {readFile} from 'fs/promises';
 import {Glob} from 'glob';
 import {ReaderAbstract} from './Abstract';
-import {IChunk} from '../../model';
+import {IChunk} from '../Model';
 
 export class ReaderFilesystem extends ReaderAbstract {
   protected encoding: BufferEncoding = 'utf-8';

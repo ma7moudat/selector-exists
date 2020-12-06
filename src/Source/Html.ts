@@ -1,6 +1,6 @@
 import {parse as parseHtml} from 'node-html-parser';
 import {SourceAbstract} from './Abstract';
-import {IChunkHtml} from '../../model';
+import {IChunkHtml} from '../Model';
 
 export class SourceHtml extends SourceAbstract {
   protected parsedHtml!: IChunkHtml[];
