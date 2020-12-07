@@ -1,4 +1,4 @@
-import {IChunk} from '../Model';
+import { IChunk } from '../Model';
 
 export abstract class ReaderAbstract {
   protected input: string;

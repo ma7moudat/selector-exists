@@ -1,4 +1,4 @@
-import {AtRule, Comment, Rule} from 'css';
+import { AtRule, Comment, Rule } from 'css';
 import HTMLElement from 'node-html-parser/dist/nodes/html';
 
 export interface IChunk {
@@ -16,7 +16,7 @@ export interface IChunkHtml extends IChunk {
 
 export interface ICssRule {
   selectors?: string[];
-  rules?: Array<Rule | Comment | AtRule>;
+  rules?: Rule[] | Comment[] | AtRule[];
 }
 
 export interface IUsage {

@@ -1,14 +1,11 @@
-import {ICssRule, IChunkCss} from '../Model';
-import {parse as parseCss} from 'css';
-import {SourceAbstract} from './Abstract';
+import { ICssRule, IChunkCss } from '../Model';
+import { parse as parseCss } from 'css';
+import { SourceAbstract } from './Abstract';
 
-const extractSelectors = (
-  allSelectors: string[],
-  {selectors = [], rules = []}: ICssRule
-): string[] => [
+const extractSelectors = (allSelectors: string[], { selectors = [], rules = [] }: ICssRule): string[] => [
   ...allSelectors,
   ...selectors,
-  ...(rules.length ? (<ICssRule[]>rules).reduce(extractSelectors, []) : []),
+  ...(rules.length ? (rules as ICssRule[]).reduce(extractSelectors, []) : []),
 ];
 
 export class SourceCss extends SourceAbstract {
@@ -17,23 +14,22 @@ export class SourceCss extends SourceAbstract {
   async getGroupedSelectors(): Promise<IChunkCss[]> {
     if (!this.groupedSelectors) {
       const chunks = await this.reader.getChuncks();
-      this.groupedSelectors = chunks
-        .map(({identifier, content}) => ({
-          identifier,
-          content,
-          selectors: SourceCss.getSelectors(content),
-        }));
+      this.groupedSelectors = chunks.map(({ identifier, content }) => ({
+        identifier,
+        content,
+        selectors: SourceCss.getSelectors(content),
+      }));
     }
     return this.groupedSelectors;
   }
 
   static getSelectors(css: string): string[] {
-    const {stylesheet} = parseCss(css);
+    const { stylesheet } = parseCss(css);
     if (!stylesheet) {
       return [];
     }
-    const {rules = []} = stylesheet;
+    const { rules = [] } = stylesheet;
 
-    return (<ICssRule[]>rules).reduce(extractSelectors, []);
+    return (rules as ICssRule[]).reduce(extractSelectors, []);
   }
 }
