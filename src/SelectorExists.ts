@@ -52,13 +52,13 @@ export class SelectorExists {
   }
 
   async processUsages() {
-    await Promise.all(
-      this.cssSources.map(async (src) => (this.cssChunks = [...this.cssChunks, ...(await src.getGroupedSelectors())])),
-    );
+    this.cssChunks = await this.cssSources.reduce(async (prevPromise: Promise<IChunkCss[]>, src) => (
+      [...(await prevPromise), ...(await src.getGroupedSelectors())]
+    ), Promise.resolve([] as IChunkCss[]));
 
-    await Promise.all(
-      this.htmlSources.map(async (src) => (this.htmlChunks = [...this.htmlChunks, ...(await src.getParsedHtml())])),
-    );
+    this.htmlChunks = await this.htmlSources.reduce(async (prevPromise: Promise<IChunkHtml[]>, src) => (
+      [...(await prevPromise), ...(await src.getParsedHtml())]
+    ), Promise.resolve([] as IChunkHtml[]));
 
     this.usages = this.htmlChunks.reduce<IUsage[]>(
       (allUsages, { identifier: identifierHtml, parsed }) => [

@@ -38,6 +38,10 @@ const argv = yargs(process.argv)
   }).argv;
 
 const instance = new SelectorExists();
+
+if (argv.selectors) {
+  instance.addCssSource(new ReaderStdin(`${argv.selectors} {}`).setIdentifier('STDIN-SELECTORS'));
+}
 if (argv.css) {
   instance.addCssSource(new ReaderStdin(argv.css));
 }
