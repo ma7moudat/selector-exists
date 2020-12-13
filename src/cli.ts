@@ -31,10 +31,20 @@ const argv = yargs(process.argv)
     type: 'string',
     description: 'Comma separated list of selectors to check',
   })
-  .option('verbose', {
-    alias: 'v',
+  .option('hide-used', {
     type: 'boolean',
-    description: 'Run with verbose logging',
+    description: 'Hide used selectors',
+    default: false,
+  })
+  .option('hide-unused', {
+    type: 'boolean',
+    description: 'Hide unused selectors',
+    default: false,
+  })
+  .option('json', {
+    type: 'boolean',
+    description: 'Output as JSON object instead of a table',
+    default: false,
   }).argv;
 
 const instance = new SelectorExists();
@@ -55,4 +65,10 @@ if (argv['html-paths']) {
   instance.addHtmlSource(new ReaderFilesystem(argv['html-paths']));
 }
 
-instance.processUsages().then(() => instance.showReport());
+instance.processUsages().then(() => {
+  instance.report({
+    json: argv.json,
+    used: !argv['hide-used'],
+    unused: !argv['hide-unused'],
+  });
+});

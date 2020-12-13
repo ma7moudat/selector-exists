@@ -25,3 +25,9 @@ export interface IUsage {
   selector: string;
   used: boolean;
 }
+
+export interface IReportOptions {
+  json: boolean;
+  used: boolean;
+  unused: boolean;
+}

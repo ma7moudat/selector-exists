@@ -1,4 +1,4 @@
-import { IChunkHtml, IChunkCss, IUsage } from './Model';
+import { IChunkHtml, IChunkCss, IUsage, IReportOptions } from './Model';
 import { ReaderAbstract } from './Reader';
 import { SourceCss, SourceHtml } from './Source';
 
@@ -87,8 +87,16 @@ export class SelectorExists {
     return this.usages;
   }
 
-  showReport() {
-    // tslint:disable-next-line:no-console
-    console.table(this.usages);
+  report(options: IReportOptions) {
+    const reportUsages = this
+      .usages
+      .filter(({used}) => (options.used && used) || (options.unused && !used));
+    if (options.json) {
+      // tslint:disable-next-line:no-console
+      console.log(JSON.stringify(reportUsages));
+    } else {
+      // tslint:disable-next-line:no-console
+      console.table(reportUsages);
+    }
   }
 }
