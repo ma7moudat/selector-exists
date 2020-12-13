@@ -1,4 +1,4 @@
-import { parse as parseHtml } from 'node-html-parser';
+import { load } from 'cheerio';
 import { SourceAbstract } from './Abstract';
 import { IChunkHtml } from '../Model';
 
@@ -11,7 +11,7 @@ export class SourceHtml extends SourceAbstract {
       this.parsedHtml = chunks.map(({ identifier, content }) => ({
         identifier,
         content,
-        parsed: parseHtml(content),
+        parsed: load(content),
       }));
     }
     return this.parsedHtml;

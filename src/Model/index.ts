@@ -1,5 +1,5 @@
 import { AtRule, Comment, Rule } from 'css';
-import HTMLElement from 'node-html-parser/dist/nodes/html';
+import cheerio from 'cheerio';
 
 export interface IChunk {
   identifier: string;
@@ -11,7 +11,7 @@ export interface IChunkCss extends IChunk {
 }
 
 export interface IChunkHtml extends IChunk {
-  parsed: HTMLElement;
+  parsed: cheerio.Root;
 }
 
 export interface ICssRule {
