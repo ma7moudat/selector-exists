@@ -16,11 +16,6 @@ const argv = yargs(process.argv)
     type: 'string',
     description: 'Path(s) to files containing HTML markup',
   })
-  .option('html-url', {
-    alias: 'u',
-    type: 'string',
-    description: 'URL of page to check',
-  })
   .option('css', {
     alias: 'c',
     type: 'string',
@@ -30,11 +25,6 @@ const argv = yargs(process.argv)
     alias: 'f',
     type: 'string',
     description: 'Path(s) to css files',
-  })
-  .option('css-url', {
-    alias: 'l',
-    type: 'string',
-    description: 'URL of stylesheet',
   })
   .option('selectors', {
     alias: 's',

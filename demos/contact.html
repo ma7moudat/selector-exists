@@ -21,12 +21,24 @@
         </nav>
     </header>
     <main role="main">
-        <div class="wrapper">
-            <div class="box">
-                <div class="box-inner">
-                    <a href="#" class="box-link">Box link</a>
+        <div class="wrapper fullwidth">
+            <form action=".">
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name">
                 </div>
-            </div>
+                <div>
+                    <label for="email">E-Mail</label>
+                    <input type="email" name="email" id="email">
+                </div>
+                <div>
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" cols="30" rows="10"></textarea>
+                </div>
+                <div>
+                    <button type="submit">Send</button>
+                </div>
+            </form>
         </div>
     </main>
     <footer class="page-footer">
