@@ -72,6 +72,47 @@ selector-exists \
 --hide-used
 ```
 
+## Code Usage
+
+```javascript
+import {ReaderStdin, ReaderFilesystem, ReaderUrl, SelectorExists} from 'selector-exists';
+
+// create instance
+const instance = new SelectorExists();
+
+// add CSS sources
+instance.addCssSource(new ReaderStdin('div { background: cyan; } section { color: red }'));
+instance.addCssSource(new ReaderFilesystem('./demos/**/*.css'));
+instance.addCssSource(new ReaderUrl('http://example.com/style.css'));
+
+// add HTML sources
+instance.addHtmlSource(new ReaderStdin('<div class="box"><span></span></div>'));
+instance.addHtmlSource(new ReaderFilesystem('./demos/**/*.html'));
+instance.addHtmlSource(new ReaderUrl('http://example.com'));
+
+instance
+    .processUsages()
+    .then(() => {
+        // logs into the console
+        instance.report({
+          json: true,
+          used: false,
+          unused: true,
+        });
+        
+        // in code, better use
+        instance.getUsages();
+        // returns an array of usages matching the following interface
+        //
+        // interface IUsage {
+        //   identifierCss: string;
+        //   identifierHtml: string;
+        //   selector: string;
+        //   used: boolean;
+        // }
+    });
+```
+
 ## Run tests
 
 ```sh
@@ -80,9 +121,7 @@ npm run test
 
 ## Author
 
-👤 **Mahmoud Aldaas<@ma7moudat>**
-
-* Github: [@ma7moudat](https://github.com/ma7moudat)
+👤 Mahmoud Aldaas <[@ma7moudat](https://github.com/ma7moudat)>
 
 ## 🤝 Contributing
 
@@ -96,8 +135,6 @@ Give a ⭐️ if this project helped you!
 
 
 ## 📝 License
-
-Copyright © 2020 [Mahmoud Aldaas<@ma7moudat>](https://github.com/ma7moudat).
 
 This project is [MIT License](https://github.com/ma7moudat/selector-exists/blob/master/LICENSE) licensed.
 
