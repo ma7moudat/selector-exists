@@ -1,0 +1,50 @@
+body {
+    background-color: antiquewhite;
+}
+
+.page-header {
+    font-size: 2rem;
+}
+
+.page-footer {
+    font-style: italic;
+}
+
+.main-navigation a {
+    text-decoration: underline;
+}
+.main-navigation a:hover {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 480px) {
+    .wrapper:not(.fullwidth) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 50vw;
+    }
+}
+
+.missing {
+    background-color: red;
+}
+
+.box .box-inner .box-link {
+    color: green;
+}
+.box .box-inner .box-link:hover,
+.box .box-inner .box-link:focus {
+    color: blue;
+}
+
+form {
+    margin: 0;
+}
+input[type="text"],
+input[type="email"] {
+    border: 1px solid #ccc;
+}
+input[type="text"]:focus,
+input[type="email"]:focus {
+    border: 1px solid #bbb;
+}
