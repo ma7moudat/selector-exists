@@ -1,6 +1,6 @@
 {
   "name": "selector-exists",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A node utility to check HTML markup for the existence of CSS selectors.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

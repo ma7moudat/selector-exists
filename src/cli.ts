@@ -2,7 +2,7 @@
 
 // Dependencies
 import yargs from 'yargs';
-import {SelectorExists, ReaderStdin, ReaderFilesystem, ReaderUrl} from './index';
+import { SelectorExists, ReaderStdin, ReaderFilesystem, ReaderUrl } from './index';
 
 // Grab provided args
 const argv = yargs(process.argv)

@@ -25,8 +25,7 @@ const allowedPseudoSelectors = [
   'not',
 ];
 
-const disallowedSelectorsRegex =
-  new RegExp(`:{1,2}(?!(${allowedPseudoSelectors.join('|')}))(\\w|-)+`, 'ig');
+const disallowedSelectorsRegex = new RegExp(`:{1,2}(?!(${allowedPseudoSelectors.join('|')}))(\\w|-)+`, 'ig');
 
 const cleanSelector = (selector: string) => {
   return selector.replace(disallowedSelectorsRegex, '');
@@ -52,13 +51,15 @@ export class SelectorExists {
   }
 
   async processUsages() {
-    this.cssChunks = await this.cssSources.reduce(async (prevPromise: Promise<IChunkCss[]>, src) => (
-      [...(await prevPromise), ...(await src.getGroupedSelectors())]
-    ), Promise.resolve([] as IChunkCss[]));
+    this.cssChunks = await this.cssSources.reduce(
+      async (prevPromise: Promise<IChunkCss[]>, src) => [...(await prevPromise), ...(await src.getGroupedSelectors())],
+      Promise.resolve([] as IChunkCss[]),
+    );
 
-    this.htmlChunks = await this.htmlSources.reduce(async (prevPromise: Promise<IChunkHtml[]>, src) => (
-      [...(await prevPromise), ...(await src.getParsedHtml())]
-    ), Promise.resolve([] as IChunkHtml[]));
+    this.htmlChunks = await this.htmlSources.reduce(
+      async (prevPromise: Promise<IChunkHtml[]>, src) => [...(await prevPromise), ...(await src.getParsedHtml())],
+      Promise.resolve([] as IChunkHtml[]),
+    );
 
     this.usages = this.htmlChunks.reduce<IUsage[]>(
       (allUsages, { identifier: identifierHtml, parsed }) => [
@@ -88,9 +89,7 @@ export class SelectorExists {
   }
 
   report(options: IReportOptions) {
-    const reportUsages = this
-      .usages
-      .filter(({used}) => (options.used && used) || (options.unused && !used));
+    const reportUsages = this.usages.filter(({ used }) => (options.used && used) || (options.unused && !used));
     if (options.json) {
       // tslint:disable-next-line:no-console
       console.log(JSON.stringify(reportUsages));

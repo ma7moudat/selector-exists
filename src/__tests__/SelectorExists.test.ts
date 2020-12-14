@@ -1,5 +1,5 @@
-import http, {Server} from 'http';
-import {ReaderStdin, ReaderFilesystem, ReaderUrl, SelectorExists} from '../index';
+import http, { Server } from 'http';
+import { ReaderStdin, ReaderFilesystem, ReaderUrl, SelectorExists } from '../index';
 
 const stdinCss = `
   body {
@@ -27,7 +27,7 @@ const server = (() => {
     async start() {
       app = await http.createServer((req, res) => {
         const isStyle = req.url === '/style.css';
-        res.writeHead(200, {'Content-Type': isStyle ? 'text/css' : 'text/html'});
+        res.writeHead(200, { 'Content-Type': isStyle ? 'text/css' : 'text/html' });
         res.end(isStyle ? stdinCss : stdinHtml);
       });
       //
@@ -60,7 +60,7 @@ test('Stdin', async () => {
   expect(instance.getUsages().length).toBe(3);
 });
 
-test('Filesystem', async() => {
+test('Filesystem', async () => {
   const instance = new SelectorExists();
   instance.addCssSource(new ReaderFilesystem('./demos/**/*.css'));
   instance.addHtmlSource(new ReaderFilesystem('./demos/**/*.html'));
@@ -68,7 +68,7 @@ test('Filesystem', async() => {
   expect(instance.getUsages().length).toBe(45);
 });
 
-test('URLs', async() => {
+test('URLs', async () => {
   const instance = new SelectorExists();
   instance.addCssSource(new ReaderUrl('http://127.0.0.1:3333/style.css'));
   instance.addHtmlSource(new ReaderUrl('http://127.0.0.1:3333/'));
